@@ -1,5 +1,11 @@
 import { Order } from 'src/orders/entities/order.entity';
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity()
 export class Product {
@@ -11,7 +17,4 @@ export class Product {
 
   @Column({ type: 'int' })
   price: number;
-
-  @ManyToOne(() => Order, (order) => order.products)
-  order: Order;
 }

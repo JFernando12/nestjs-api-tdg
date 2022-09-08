@@ -1,19 +1,14 @@
 import { Product } from 'src/products/entities/product.entity';
-import {
-  CreateDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
 
 @Entity()
 export class Order {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @OneToMany(() => Product, (product) => product.order)
-  products: Product[];
+  @Column({ type: 'varchar', length: 200 })
+  client: string;
 
-  @CreateDateColumn()
-  createAt: Date;
+  @ManyToOne(() => Product)
+  products: Product[];
 }
