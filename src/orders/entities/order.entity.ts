@@ -1,5 +1,5 @@
-import { Product } from 'src/products/entities/product.entity';
-import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { OrderProduct } from 'src/order-product/entities/order-product.entity';
+import { Column, Entity, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 
 @Entity()
 export class Order {
@@ -9,6 +9,6 @@ export class Order {
   @Column({ type: 'varchar', length: 200 })
   client: string;
 
-  @ManyToOne(() => Product)
-  products: Product[];
+  @OneToMany(() => OrderProduct, (orderProduct) => orderProduct.order)
+  items: OrderProduct[];
 }
