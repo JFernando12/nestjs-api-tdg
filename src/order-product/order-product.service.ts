@@ -16,6 +16,12 @@ export class OrderProductService {
     @InjectRepository(Product) private productRepo: Repository<Product>,
   ) {}
 
+  async findAll() {
+    return await this.orderProductRepo.find({
+      relations: ['product', 'order'],
+    });
+  }
+
   async create(body: CreateOrderProductDto) {
     const order = await this.orderRepo.findOneBy({ id: body.orderId });
     const product = await this.productRepo.findOneBy({ id: body.productId });

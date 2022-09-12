@@ -1,11 +1,4 @@
-import { Order } from 'src/orders/entities/order.entity';
-import {
-  Column,
-  Entity,
-  JoinTable,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Product {

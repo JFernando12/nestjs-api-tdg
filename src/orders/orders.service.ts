@@ -13,12 +13,12 @@ export class OrdersService {
     return await this.orderRepo.save(newOrder);
   }
 
-  findAll() {
-    return this.orderRepo.find();
+  async findAll() {
+    return await this.orderRepo.find({ relations: ['items', 'items.product'] });
   }
 
-  findOne(id: number) {
-    return this.orderRepo.findBy({ id });
+  async findOne(id: number) {
+    return await this.orderRepo.findBy({ id });
   }
 
   async update(id: number, body: UpdateOrderDto) {

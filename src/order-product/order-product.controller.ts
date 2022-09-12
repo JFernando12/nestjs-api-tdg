@@ -6,6 +6,7 @@ import {
   Delete,
   Put,
   ParseIntPipe,
+  Get,
 } from '@nestjs/common';
 import { OrderProductService } from './order-product.service';
 import { CreateOrderProductDto } from './dto/create-order-product.dto';
@@ -14,6 +15,11 @@ import { UpdateOrderProductDto } from './dto/update-order-product.dto';
 @Controller('order-product')
 export class OrderProductController {
   constructor(private readonly orderProductService: OrderProductService) {}
+
+  @Get()
+  findAll() {
+    return this.orderProductService.findAll();
+  }
 
   @Post()
   create(@Body() body: CreateOrderProductDto) {
