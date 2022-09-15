@@ -1,3 +1,4 @@
+import { PartialType } from '@nestjs/mapped-types';
 import {
   IsEmail,
   IsNotEmpty,
@@ -22,3 +23,5 @@ export class CreateUserDto {
   @IsPositive()
   customerId: number;
 }
+
+export class UpdateUserDto extends PartialType(CreateUserDto) {}

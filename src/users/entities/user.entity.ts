@@ -22,6 +22,6 @@ export class User {
   role: string;
 
   @OneToOne(() => Customer, (customer) => customer.user, { nullable: true })
-  @JoinColumn({ name: 'customer_id' })
+  @JoinColumn()
   customer: Customer;
 }
