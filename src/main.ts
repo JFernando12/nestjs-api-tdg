@@ -8,6 +8,9 @@ async function bootstrap() {
   app.useGlobalPipes(
     new ValidationPipe({
       forbidNonWhitelisted: true,
+      transformOptions: {
+        enableImplicitConversion: true, //Permite que los dtos transformen el tipo de valores.
+      },
     }),
   );
 

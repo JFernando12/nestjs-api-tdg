@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Repository } from 'typeorm';
-import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
+import { CreateUserDto, FilterUsersDto, UpdateUserDto } from './dto/user.dto';
 import { User } from './entities/user.entity';
 
 @Injectable()
@@ -23,8 +23,13 @@ export class UsersService {
     return this.userRepo.save(newUser);
   }
 
-  async findAll() {
-    return await this.userRepo.find({});
+  async findAll(params: FilterUsersDto) {
+    const { limit, offset } = params;
+    return await this.userRepo.find({
+      relations: ['customer'],
+      take: limit,
+      skip: offset,
+    });
   }
 
   async findOne(id: number) {
@@ -33,6 +38,12 @@ export class UsersService {
 
   async update(id: number, body: UpdateUserDto) {
     const user = await this.userRepo.findOneBy({ id });
+    if (body.customerId) {
+      const customer = await this.customerRepo.findOneBy({
+        id: body.customerId,
+      });
+      user.customer = customer;
+    }
     return await this.userRepo.save({ ...user, ...body });
   }
 

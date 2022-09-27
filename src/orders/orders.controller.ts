@@ -7,9 +7,14 @@ import {
   Delete,
   ParseIntPipe,
   Put,
+  Query,
 } from '@nestjs/common';
 import { OrdersService } from './orders.service';
-import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
+import {
+  CreateOrderDto,
+  FilterOrdersDto,
+  UpdateOrderDto,
+} from './dto/order.dto';
 
 @Controller('orders')
 export class OrdersController {
@@ -21,8 +26,8 @@ export class OrdersController {
   }
 
   @Get()
-  findAll() {
-    return this.ordersService.findAll();
+  findAll(@Query() params: FilterOrdersDto) {
+    return this.ordersService.findAll(params);
   }
 
   @Get(':id')

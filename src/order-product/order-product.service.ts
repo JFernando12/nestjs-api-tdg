@@ -5,6 +5,7 @@ import { Product } from 'src/products/entities/product.entity';
 import { Repository } from 'typeorm';
 import {
   CreateOrderProductDto,
+  FilterOrdersProductsDto,
   UpdateOrderProductDto,
 } from './dto/order-product.dto';
 import { OrderProduct } from './entities/order-product.entity';
@@ -18,9 +19,12 @@ export class OrderProductService {
     @InjectRepository(Product) private productRepo: Repository<Product>,
   ) {}
 
-  async findAll() {
+  async findAll(params: FilterOrdersProductsDto) {
+    const { limit, offset } = params;
     return await this.orderProductRepo.find({
       relations: ['product', 'order'],
+      take: limit,
+      skip: offset,
     });
   }
 

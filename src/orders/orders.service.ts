@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Customer } from 'src/customers/entities/customer.entity';
 import { Repository } from 'typeorm';
-import { CreateOrderDto, UpdateOrderDto } from './dto/order.dto';
+import {
+  CreateOrderDto,
+  FilterOrdersDto,
+  UpdateOrderDto,
+} from './dto/order.dto';
 import { Order } from './entities/order.entity';
 
 @Injectable()
@@ -14,12 +18,17 @@ export class OrdersService {
 
   async create(body: CreateOrderDto) {
     const customer = await this.customerRepo.findOneBy({ id: body.customerId });
-    const newOrder = this.orderRepo.create(customer);
+    const newOrder = this.orderRepo.create({ customer });
     return await this.orderRepo.save(newOrder);
   }
 
-  async findAll() {
-    return await this.orderRepo.find({ relations: ['items', 'items.product'] });
+  async findAll(params?: FilterOrdersDto) {
+    const { limit, offset } = params;
+    return await this.orderRepo.find({
+      relations: ['items', 'items.product', 'customer'],
+      take: limit,
+      skip: offset,
+    });
   }
 
   async findOne(id: number) {
@@ -27,7 +36,13 @@ export class OrdersService {
   }
 
   async update(id: number, body: UpdateOrderDto) {
-    const order = await this.orderRepo.findBy({ id });
+    const order = await this.orderRepo.findOneBy({ id });
+    if (body.customerId) {
+      const customer = await this.customerRepo.findOne({
+        where: { id: body.customerId },
+      });
+      order.customer = customer;
+    }
     return await this.orderRepo.save({ ...order, ...body });
   }
 

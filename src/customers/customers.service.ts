@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateCustomerDto, UpdateCustomerDto } from './dto/customer.dto';
+import {
+  CreateCustomerDto,
+  FilterCustomersDto,
+  UpdateCustomerDto,
+} from './dto/customer.dto';
 import { Customer } from './entities/customer.entity';
 
 @Injectable()
@@ -14,8 +18,10 @@ export class CustomersService {
     return this.customerRepo.save(newCustomer);
   }
 
-  async findAll() {
-    return await this.customerRepo.find({});
+  async findAll(params: FilterCustomersDto) {
+    const { limit, offset } = params;
+
+    return await this.customerRepo.find({ take: limit, skip: offset });
   }
 
   async findOne(id: number) {

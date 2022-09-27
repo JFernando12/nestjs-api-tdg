@@ -1,7 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { CreateProductDto, UpdateProductDto } from './dtos/product.dto';
+import {
+  CreateProductDto,
+  FilterProductsDto,
+  UpdateProductDto,
+} from './dtos/product.dto';
 import { Product } from './entities/product.entity';
 
 @Injectable()
@@ -10,8 +14,9 @@ export class ProductsService {
     @InjectRepository(Product) private productRepo: Repository<Product>,
   ) {}
 
-  async getAll() {
-    return await this.productRepo.find();
+  async getAll(params: FilterProductsDto) {
+    const { limit, offset } = params;
+    return await this.productRepo.find({ take: limit, skip: offset });
   }
 
   async getOne(id: number) {
