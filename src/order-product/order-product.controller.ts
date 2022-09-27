@@ -9,8 +9,10 @@ import {
   Get,
 } from '@nestjs/common';
 import { OrderProductService } from './order-product.service';
-import { CreateOrderProductDto } from './dto/create-order-product.dto';
-import { UpdateOrderProductDto } from './dto/update-order-product.dto';
+import {
+  CreateOrderProductDto,
+  UpdateOrderProductDto,
+} from './dto/order-product.dto';
 
 @Controller('order-product')
 export class OrderProductController {
